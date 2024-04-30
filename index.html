@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html style="transform:scale(1,1);">
 
 <head>
     <meta charset="UTF-8">
@@ -12,8 +12,14 @@
     <style>
         .grid {
             display: grid;
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .info {
+            display: grid;
             grid-template-columns: repeat(1, 1fr);
             gap: 0px;
+
         }
     </style>
 
@@ -24,18 +30,69 @@
 <body onload="main()">
     <h2>Android Yata组件化性能测试报告</h2>
 
+    <div id="info-container"  class="info"></div>
     <div id="grid-container" class="grid"></div>
 
     <script>
         function main() {
             const params = new URLSearchParams(window.location.search);
             const paramsObject = Object.fromEntries(params);
+            console.log("paramsObject="+JSON.stringify(paramsObject));
 
-            const paramDataArray = decode(paramsObject["data"])
+            handleInfo()
+            handleChart()
+        }
 
-            for (var i = 0; i < paramDataArray.length; i++) {
-                const paramData = paramDataArray[i];
-                handleSingleSceneDuration(paramData);
+        function handleInfo(){
+            const params = new URLSearchParams(window.location.search);
+            const paramsObject = Object.fromEntries(params);
+
+            let container = document.getElementById('info-container');
+            let div = document.createElement('div');
+            div.style.paddingTop = '20px';
+            div.textContent = "所有已去除5%最大值和5%最小值";
+            container.appendChild(div);
+
+            const infos = JSON.parse(decode(paramsObject["info"]));
+            Object.keys(infos).forEach(key => {
+                const info = infos[key]
+
+                let div = document.createElement('div');
+                console.log("info="+JSON.stringify(info));
+                div.style.paddingTop = '20px';
+                div.textContent = "任务ID【"+key+"】"+JSON.stringify(info);
+
+                container.appendChild(div);
+            })
+        }
+
+        function handleChart(){
+            const params = new URLSearchParams(window.location.search);
+            const paramsObject = Object.fromEntries(params);
+            const paramDataArray = JSON.parse(decode(paramsObject["data"]));
+            console.log("paramDataArray="+paramDataArray);
+
+            const durationTypes = [
+                "yata_view_upscreen_timing_duration",
+                "yata_store_tree_build_timing_duration",
+                "yata_store_tree_update_timing_duration"
+            ];
+
+            for(let i = 0; i < durationTypes.length; i++){
+                for (let t = 0; t < paramDataArray.length; t++) {
+                    const paramData = paramDataArray[t];
+                    const scene = paramData['scene'];
+                    const durationType = durationTypes[i];
+
+                    if(scene.toString() === "biz_first_enter" && durationType === "yata_store_tree_update_timing_duration"){
+                        //do nothing 首屏没有差量建树
+                    }else if(scene.toString() === "biz_diff_refresh" && durationType === "yata_store_tree_build_timing_duration"){
+                        //do nothing 非首屏没有全量建树
+                    }else{
+                        console.log("paramData="+paramData);
+                        handleSingleSceneDuration(durationType, paramData);
+                    }
+                }
             }
         }
 
@@ -48,25 +105,16 @@
             return uncompressedData
         }
 
-        function handleSingleSceneDuration(paramData) {
-            const durationType = [
-                "yata_store_tree_build_timing_duration",
-                "yata_store_tree_update_timing_duration",
-                "yata_view_upscreen_timing_duration"
-            ];
-
-            for (var i = 0; i < durationType.length; i++) {
-                let type = durationType[i];
-                console.log('print type:-----' + type);
-                let durationData = paramData[type];
-                console.log('data' + durationData);
-                let title = paramData['biz_code'] + '_' + paramData['scene'] + '_' + type;
-                drawChart(convertToCN(title), durationData);
-            }
+        function handleSingleSceneDuration(durationType, paramData) {
+            console.log('print type:-----' + durationType);
+            let durationData = paramData[durationType];
+            console.log('data' + durationData);
+            let title = paramData['biz_code'] + '_' + paramData['scene'] + '_' + durationType;
+            drawChart(convertToCN(title), durationData);
         }
 
         function drawChart(title, durationData) {
-            //整理数据     
+            //整理数据
             let dataArray = [];
             Object.keys(durationData).forEach(key => {
                 let yValue = durationData[key];
@@ -84,7 +132,7 @@
 
             //画图
             let container = document.getElementById('grid-container');
-            //region addView
+            //addView
             let div = document.createElement('div');
             let viewId = "chart" + title;
             div.id = viewId;
@@ -101,11 +149,11 @@
 
         function convertToCN(content) {
             return content
+                .replace('yata_skubuy', '极致提单')
                 .replace('yata_sku', 'SKU')
                 .replace('yata_order_list', '订单')
                 .replace('yata_buynow', '提单')
                 .replace('yata_cart', '购物车')
-                .replace('yata_skubuy', '极致提单')
                 .replace('biz_first_enter', '首屏')
                 .replace('biz_diff_refresh', '差量刷新')
                 .replace('yata_store_tree_build_timing_duration', '全量建树')
