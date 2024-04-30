@@ -1,0 +1,15 @@
+DEBUG [CommandLine-/Users/admin/Desktop/NightProject/RainbowStalkerWeb] Execute cmd(`git remote -v`) in dir /Users/admin/Desktop/NightProject/RainbowStalkerWeb.log start  **************
+DEBUG [CommandLine-/Users/admin/Desktop/NightProject/RainbowStalkerWeb] Execute cmd(`git remote -v`) in dir /Users/admin/Desktop/NightProject/Shark.log start  **************
+DEBUG [CommandLine-/Users/admin/Desktop/NightProject/RainbowStalkerWeb] Execute cmd(`git remote -v`) in dir /Users/admin/Desktop/NightProject/LForever-master.log start  **************
+DEBUG [CommandLine-/Users/admin/Desktop/NightProject/RainbowStalkerWeb] Execute cmd(`git remote -v`) in dir /Users/admin/Desktop/NightProject/RainbowStalkerWeb.log end.exitCode:0 result:origin	https://github.com/RainbowStalker/RainbowStalker.github.io.git (fetch)
+origin	https://github.com/RainbowStalker/RainbowStalker.github.io.git (push)
+**************
+DEBUG [CommandLine-/Users/admin/Desktop/NightProject/RainbowStalkerWeb] Execute cmd(`git status -s`) in dir /Users/admin/Desktop/NightProject/RainbowStalkerWeb.log start  **************
+DEBUG [CommandLine-/Users/admin/Desktop/NightProject/RainbowStalkerWeb] Execute cmd(`git remote -v`) in dir /Users/admin/Desktop/NightProject/LForever-master.log end.exitCode:128 result:**************
+DEBUG [CommandLine-/Users/admin/Desktop/NightProject/RainbowStalkerWeb] Execute cmd(`git remote -v`) in dir /Users/admin/Desktop/NightProject/Shark.log end.exitCode:0 result:**************
+DEBUG [CommandLine-/Users/admin/Desktop/NightProject/RainbowStalkerWeb] Execute cmd(`git status -s`) in dir /Users/admin/Desktop/NightProject/RainbowStalkerWeb.log end.exitCode:0 result:?? .gradle/
+?? .idea/
+**************
+DEBUG [CommandLine-/Users/admin/Desktop/NightProject/RainbowStalkerWeb] Execute cmd(`git symbolic-ref --short -q HEAD`) in dir /Users/admin/Desktop/NightProject/RainbowStalkerWeb.log start  **************
+DEBUG [CommandLine-/Users/admin/Desktop/NightProject/RainbowStalkerWeb] Execute cmd(`git symbolic-ref --short -q HEAD`) in dir /Users/admin/Desktop/NightProject/RainbowStalkerWeb.log end.exitCode:0 result:master
+**************

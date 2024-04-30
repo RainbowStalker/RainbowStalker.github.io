@@ -27,25 +27,73 @@
     <div id="grid-container" class="grid"></div>
 
     <script>
+
         function main() {
             const params = new URLSearchParams(window.location.search);
             const paramsObject = Object.fromEntries(params);
 
-            const paramDataArray = decode(paramsObject["data"])
+            const paramData = {
+                "biz_code": "yata_sku",
+                "scene": "biz_first_enter",
+                "yata_store_tree_build_timing_duration": {
+                    "v11": [
+                        3,
+                        1
+                    ],
+                    "v12": [
+                        4,
+                        1
+                    ],
+                    "v13": [
+                        4,
+                        1
+                    ]
+                },
+                "yata_store_tree_update_timing_duration": {
+                    "v11": [
+                        0,
+                        0
+                    ],
+                    "v12": [
+                        0,
+                        0
+                    ],
+                    "v13": [
+                        0,
+                        0
+                    ]
+                },
+                "yata_view_upscreen_timing_duration": {
+                    "v11": [
+                        189,
+                        107
+                    ],
+                    "v12": [
+                        203,
+                        105
+                    ],
+                    "v13": [
+                        197,
+                        100
+                    ]
+                }
+            };
 
-            for (var i = 0; i < paramDataArray.length; i++) {
-                const paramData = paramDataArray[i];
-                handleSingleSceneDuration(paramData);
-            }
+            handleSingleSceneDuration(paramData);
         }
 
-        function decode(gzipStr) {
-            // 将gzip字符串转换为Uint8Array类型的数据
-            const gzipData = new Uint8Array(atob(gzipStr).split('').map(char => char.charCodeAt(0)));
-
-            // 解压gzip数据
-            const uncompressedData = pako.inflate(gzipData, { to: 'string' });
-            return uncompressedData
+        function encode(content) {
+// 将gzip字符串转换为Uint8Array类型的数据
+const gzipData = new Uint8Array(atob(gzipStr).split('').map(char => char.charCodeAt(0)));
+ 
+10 // 解压gzip数据
+11 const uncompressedData = pako.inflate(gzipData, { to: 'string' });
+        }
+        function decode() {
+            var encodedData = $('#content').val();
+            var decodedData = window.atob(encodedData);
+            var data = pako.ungzip(decodedData, { to: "string" });
+            $('#ciphertext').text(data);
         }
 
         function handleSingleSceneDuration(paramData) {

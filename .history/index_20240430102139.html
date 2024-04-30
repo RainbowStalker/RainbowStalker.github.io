@@ -6,9 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="https://cdn.bootcss.com/pako/1.0.6/pako.min.js"></script>
-
     <style>
         .grid {
             display: grid;
@@ -18,7 +15,7 @@
     </style>
 
     <title>Android Yata组件化性能测试报告</title>
-
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 
 <body onload="main()">
@@ -27,26 +24,8 @@
     <div id="grid-container" class="grid"></div>
 
     <script>
-        function main() {
-            const params = new URLSearchParams(window.location.search);
-            const paramsObject = Object.fromEntries(params);
 
-            const paramDataArray = decode(paramsObject["data"])
-
-            for (var i = 0; i < paramDataArray.length; i++) {
-                const paramData = paramDataArray[i];
-                handleSingleSceneDuration(paramData);
-            }
-        }
-
-        function decode(gzipStr) {
-            // 将gzip字符串转换为Uint8Array类型的数据
-            const gzipData = new Uint8Array(atob(gzipStr).split('').map(char => char.charCodeAt(0)));
-
-            // 解压gzip数据
-            const uncompressedData = pako.inflate(gzipData, { to: 'string' });
-            return uncompressedData
-        }
+        fun 
 
         function handleSingleSceneDuration(paramData) {
             const durationType = [
@@ -54,6 +33,53 @@
                 "yata_store_tree_update_timing_duration",
                 "yata_view_upscreen_timing_duration"
             ];
+
+            const paramData = {
+                "biz_code": "yata_sku",
+                "scene": "biz_first_enter",
+                "yata_store_tree_build_timing_duration": {
+                    "v11": [
+                        3,
+                        1
+                    ],
+                    "v12": [
+                        4,
+                        1
+                    ],
+                    "v13": [
+                        4,
+                        1
+                    ]
+                },
+                "yata_store_tree_update_timing_duration": {
+                    "v11": [
+                        0,
+                        0
+                    ],
+                    "v12": [
+                        0,
+                        0
+                    ],
+                    "v13": [
+                        0,
+                        0
+                    ]
+                },
+                "yata_view_upscreen_timing_duration": {
+                    "v11": [
+                        189,
+                        107
+                    ],
+                    "v12": [
+                        203,
+                        105
+                    ],
+                    "v13": [
+                        197,
+                        100
+                    ]
+                }
+            };
 
             for (var i = 0; i < durationType.length; i++) {
                 let type = durationType[i];
@@ -90,8 +116,9 @@
             div.id = viewId;
             container.appendChild(div);
             Plotly.newPlot(viewId, dataArray, layout = {
+                title: title,
                 xaxis: {
-                    title: title
+                    title: "次数"
                 },
                 yaxis: {
                     title: "耗时/ms"

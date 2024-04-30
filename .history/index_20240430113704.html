@@ -31,7 +31,7 @@
             const params = new URLSearchParams(window.location.search);
             const paramsObject = Object.fromEntries(params);
 
-            const paramDataArray = decode(paramsObject["data"])
+            const paramDataArray = decode(["data"])
 
             for (var i = 0; i < paramDataArray.length; i++) {
                 const paramData = paramDataArray[i];
